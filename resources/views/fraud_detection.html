@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Anti-Fraud Demo</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <style>
+        :root {
+            --bg: #0b1220;
+            --card: #111a2e;
+            --muted: #8aa0c6;
+            --text: #e8f0ff;
+            --line: rgba(255, 255, 255, 0.08);
+            --good: #22c55e;
+            --bad: #ef4444;
+            --warn: #f59e0b;
+            --accent: #60a5fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family:
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                Segoe UI,
+                Roboto,
+                Arial;
+            background:
+                radial-gradient(
+                    1200px 600px at 10% -10%,
+                    rgba(96, 165, 250, 0.35),
+                    transparent 60%
+                ),
+                radial-gradient(
+                    900px 500px at 100% 10%,
+                    rgba(34, 197, 94, 0.18),
+                    transparent 55%
+                ),
+                var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 28px auto;
+            padding: 0 16px 40px;
+        }
+
+        .header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 18px 18px;
+            border: 1px solid var(--line);
+            background: linear-gradient(
+                180deg,
+                rgba(17, 26, 46, 0.95),
+                rgba(17, 26, 46, 0.75)
+            );
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 26px;
+            letter-spacing: 0.2px;
+        }
+        .sub {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            background: rgba(17, 26, 46, 0.82);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .card h2 {
+            margin: 0 0 12px;
+            font-size: 16px;
+            letter-spacing: 0.2px;
+            color: #dbe7ff;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .field span {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: rgba(9, 14, 25, 0.7);
+            color: var(--text);
+            outline: none;
+        }
+        input:focus {
+            border-color: rgba(96, 165, 250, 0.7);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.45);
+            background: rgba(96, 165, 250, 0.18);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn:hover {
+            filter: brightness(1.07);
+        }
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-ghost {
+            border-color: var(--line);
+            background: rgba(255, 255, 255, 0.04);
+            color: #dbe7ff;
+        }
+
+        .btn-small {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .hint {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+        code {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--line);
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .status {
+            border-radius: 14px;
+            padding: 12px 12px;
+            border: 1px solid var(--line);
+            margin-bottom: 12px;
+            color: #dbe7ff;
+        }
+        .status-idle {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .status-loading {
+            background: rgba(96, 165, 250, 0.12);
+            border-color: rgba(96, 165, 250, 0.28);
+        }
+        .status-good {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.28);
+        }
+        .status-bad {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.28);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .metric {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .metric-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .raw {
+            margin-top: 12px;
+        }
+        .raw pre {
+            margin: 10px 0 0;
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            background: rgba(9, 14, 25, 0.7);
+            overflow: auto;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .table-wrap {
+            overflow: auto;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 780px;
+            background: rgba(9, 14, 25, 0.35);
+        }
+
+        .table th,
+        .table td {
+            padding: 10px 10px;
+            border-bottom: 1px solid var(--line);
+            font-size: 13px;
+        }
+        .table th {
+            text-align: left;
+            color: var(--muted);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .pill-good {
+            border-color: rgba(34, 197, 94, 0.35);
+            background: rgba(34, 197, 94, 0.12);
+        }
+        .pill-bad {
+            border-color: rgba(239, 68, 68, 0.35);
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .footer {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <header class="header">
+                <div>
+                    <h1>Anti‑Fraud Demo</h1>
+                    <p class="sub">
+                        Форма отправляет транзакцию в API и получает
+                        fraud‑score.
+                    </p>
+                </div>
+                <span class="badge">MSc / ML</span>
+            </header>
+
+            <div class="grid">
+                <!-- FORM -->
+                <section class="card">
+                    <h2>Проверка транзакции</h2>
+
+                    <form id="txForm" class="form">
+                        <label class="field">
+                            <span>Сумма (amount)</span>
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="amount"
+                                value="1200"
+                                required
+                            />
+                        </label>
+
+                        <label class="field">
+                            <span>Транзакций за последний час</span>
+                            <input
+                                type="number"
+                                min="0"
+                                name="transactions_last_hour"
+                                value="2"
+                                required
+                            />
+                        </label>
+
+                        <label class="field">
+                            <span>Дистанция от прошлой локации (км)</span>
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                name="distance_from_last_location"
+                                value="0.8"
+                                required
+                            />
+                        </label>
+
+                        <div class="actions">
+                            <button class="btn" type="submit">Проверить</button>
+                            <button
+                                class="btn btn-ghost"
+                                type="button"
+                                id="fillFraud"
+                            >
+                                Пример “фрод”
+                            </button>
+                        </div>
+
+                        <p class="hint">
+                            API: <code id="apiUrl">/api/check-transaction</code>
+                        </p>
+                    </form>
+                </section>
+
+                <!-- RESULT -->
+                <section class="card">
+                    <h2>Результат</h2>
+
+                    <div id="status" class="status status-idle">
+                        Ожидаю запрос…
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-label">fraud_score</div>
+                            <div class="metric-value" id="score">—</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">is_fraud</div>
+                            <div class="metric-value" id="isFraud">—</div>
+                        </div>
+                    </div>
+
+                    <details class="raw">
+                        <summary>Raw JSON</summary>
+                        <pre id="rawJson">{}</pre>
+                    </details>
+                </section>
+            </div>
+
+            <!-- HISTORY -->
+            <section class="card">
+                <div class="row">
+                    <h2>История запросов</h2>
+                    <button class="btn btn-small btn-ghost" id="clear">
+                        Очистить
+                    </button>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>amount</th>
+                                <th>tx_last_hour</th>
+                                <th>distance_km</th>
+                                <th>fraud_score</th>
+                                <th>is_fraud</th>
+                                <th>time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="empty">
+                                <td colspan="7">Пока нет запросов.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <span>Demo UI • HTML/CSS • интеграция через fetch()</span>
+            </footer>
+        </div>
+
+        <script>
+            // 🔧 Если фронт отдельно от Laravel (другой домен/порт), укажи полный URL:
+            // const API = "http://127.0.0.1:8000/api/check-transaction";
+            const API = document.getElementById("apiUrl").textContent;
+
+            const form = document.getElementById("txForm");
+            const statusEl = document.getElementById("status");
+            const scoreEl = document.getElementById("score");
+            const isFraudEl = document.getElementById("isFraud");
+            const rawEl = document.getElementById("rawJson");
+
+            const fillFraudBtn = document.getElementById("fillFraud");
+            const clearBtn = document.getElementById("clear");
+            const tableBody = document.querySelector("#historyTable tbody");
+
+            let counter = 0;
+
+            function setStatus(type, text) {
+                statusEl.className = "status " + type;
+                statusEl.textContent = text;
+            }
+
+            function addRow(payload, result) {
+                // remove empty row
+                const empty = tableBody.querySelector(".empty");
+                if (empty) empty.remove();
+
+                counter += 1;
+                const tr = document.createElement("tr");
+
+                const now = new Date();
+                const time = now.toLocaleString();
+
+                const score = result?.fraud_score ?? "—";
+                const isFraud = result?.is_fraud ?? "—";
+
+                tr.innerHTML = `
+        <td>${counter}</td>
+        <td>${payload.amount}</td>
+        <td>${payload.transactions_last_hour}</td>
+        <td>${payload.distance_from_last_location}</td>
+        <td>${score}</td>
+        <td>
+          <span class="pill ${isFraud === true ? "pill-bad" : isFraud === false ? "pill-good" : ""}">
+            ${isFraud}
+          </span>
+        </td>
+        <td>${time}</td>
+      `;
+                tableBody.prepend(tr);
+            }
+
+            fillFraudBtn.addEventListener("click", () => {
+                form.amount.value = 95000;
+                form.transactions_last_hour.value = 18;
+                form.distance_from_last_location.value = 1200; // резкая смена локации
+            });
+
+            clearBtn.addEventListener("click", () => {
+                counter = 0;
+                tableBody.innerHTML = `
+        <tr class="empty">
+          <td colspan="7">Пока нет запросов.</td>
+        </tr>
+      `;
+                scoreEl.textContent = "—";
+                isFraudEl.textContent = "—";
+                rawEl.textContent = "{}";
+                setStatus("status-idle", "Ожидаю запрос…");
+            });
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const payload = {
+                    amount: Number(form.amount.value),
+                    transactions_last_hour: Number(
+                        form.transactions_last_hour.value,
+                    ),
+                    distance_from_last_location: Number(
+                        form.distance_from_last_location.value,
+                    ),
+                };
+
+                setStatus("status-loading", "Отправляю запрос в API…");
+
+                try {
+                    // Use GET request with query params to avoid CSRF issues
+                    const params = new URLSearchParams({
+                        amount: String(payload.amount),
+                        transactions_last_hour: String(
+                            payload.transactions_last_hour,
+                        ),
+                        distance_from_last_location: String(
+                            payload.distance_from_last_location,
+                        ),
+                    });
+
+                    const res = await fetch(API + "?" + params.toString(), {
+                        method: "GET",
+                        headers: { Accept: "application/json" },
+                    });
+
+                    if (!res.ok) throw new Error("HTTP " + res.status);
+
+                    const data = await res.json();
+
+                    scoreEl.textContent = String(data.fraud_score ?? "—");
+                    isFraudEl.textContent = String(data.is_fraud ?? "—");
+                    rawEl.textContent = JSON.stringify(data, null, 2);
+
+                    if (data.is_fraud === true) {
+                        setStatus(
+                            "status-bad",
+                            "⚠️ Подозрительная операция (FRAUD)",
+                        );
+                    } else if (data.is_fraud === false) {
+                        setStatus(
+                            "status-good",
+                            "✅ Операция выглядит нормально",
+                        );
+                    } else {
+                        setStatus(
+                            "status-idle",
+                            "Получен ответ (без флага is_fraud)",
+                        );
+                    }
+
+                    addRow(payload, data);
+                } catch (err) {
+                    setStatus("status-bad", "Ошибка запроса: " + err.message);
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+.container {
+    background: #161b22;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+input {
+    border: 1px solid #30363d;
+}
+
+input:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.3);
+}
+
+table {
+    border: 1px solid #30363d;
+    background: #161b22;
+}
+
+table th {
+    background: #21262d;
+    color: #58a6ff;
+}
+
+table td {
+    color: #c9d1d9;
+}
+
+#history-table th,
+#history-table td {
+    border: 1px solid #ffffff;
+    padding: 8px;
+}
+
+#history-table th {
+    background: #21262d;
+    color: #58a6ff;
+}
+
+#history-table td {
+    color: #c9d1d9;
+}
