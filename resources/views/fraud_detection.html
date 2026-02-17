@@ -3,316 +3,22 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Anti-Fraud Demo</title>
-        <link rel="stylesheet" href="styles.css" />
+        <title>Anti-Fraud</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/css/app.css" />
     </head>
-    <style>
-        :root {
-            --bg: #0b1220;
-            --card: #111a2e;
-            --muted: #8aa0c6;
-            --text: #e8f0ff;
-            --line: rgba(255, 255, 255, 0.08);
-            --good: #22c55e;
-            --bad: #ef4444;
-            --warn: #f59e0b;
-            --accent: #60a5fa;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            margin: 0;
-            font-family:
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                Segoe UI,
-                Roboto,
-                Arial;
-            background:
-                radial-gradient(
-                    1200px 600px at 10% -10%,
-                    rgba(96, 165, 250, 0.35),
-                    transparent 60%
-                ),
-                radial-gradient(
-                    900px 500px at 100% 10%,
-                    rgba(34, 197, 94, 0.18),
-                    transparent 55%
-                ),
-                var(--bg);
-            color: var(--text);
-        }
-
-        .container {
-            max-width: 1080px;
-            margin: 28px auto;
-            padding: 0 16px 40px;
-        }
-
-        .header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 18px 18px;
-            border: 1px solid var(--line);
-            background: linear-gradient(
-                180deg,
-                rgba(17, 26, 46, 0.95),
-                rgba(17, 26, 46, 0.75)
-            );
-            border-radius: 16px;
-            margin-bottom: 16px;
-        }
-
-        h1 {
-            margin: 0 0 6px;
-            font-size: 26px;
-            letter-spacing: 0.2px;
-        }
-        .sub {
-            margin: 0;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .badge {
-            padding: 6px 10px;
-            border-radius: 999px;
-            border: 1px solid var(--line);
-            color: var(--muted);
-            font-size: 12px;
-            white-space: nowrap;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-bottom: 14px;
-        }
-
-        @media (max-width: 900px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .card {
-            border: 1px solid var(--line);
-            background: rgba(17, 26, 46, 0.82);
-            border-radius: 16px;
-            padding: 16px;
-        }
-
-        .card h2 {
-            margin: 0 0 12px;
-            font-size: 16px;
-            letter-spacing: 0.2px;
-            color: #dbe7ff;
-        }
-
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .field span {
-            display: block;
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 6px;
-        }
-
-        input {
-            width: 100%;
-            padding: 11px 12px;
-            border-radius: 12px;
-            border: 1px solid var(--line);
-            background: rgba(9, 14, 25, 0.7);
-            color: var(--text);
-            outline: none;
-        }
-        input:focus {
-            border-color: rgba(96, 165, 250, 0.7);
-            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 4px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(96, 165, 250, 0.45);
-            background: rgba(96, 165, 250, 0.18);
-            color: var(--text);
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn:hover {
-            filter: brightness(1.07);
-        }
-        .btn:active {
-            transform: translateY(1px);
-        }
-
-        .btn-ghost {
-            border-color: var(--line);
-            background: rgba(255, 255, 255, 0.04);
-            color: #dbe7ff;
-        }
-
-        .btn-small {
-            padding: 8px 10px;
-            font-size: 13px;
-        }
-
-        .hint {
-            margin: 10px 0 0;
-            color: var(--muted);
-            font-size: 12px;
-        }
-        code {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--line);
-            padding: 2px 6px;
-            border-radius: 8px;
-        }
-
-        .status {
-            border-radius: 14px;
-            padding: 12px 12px;
-            border: 1px solid var(--line);
-            margin-bottom: 12px;
-            color: #dbe7ff;
-        }
-        .status-idle {
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .status-loading {
-            background: rgba(96, 165, 250, 0.12);
-            border-color: rgba(96, 165, 250, 0.28);
-        }
-        .status-good {
-            background: rgba(34, 197, 94, 0.12);
-            border-color: rgba(34, 197, 94, 0.28);
-        }
-        .status-bad {
-            background: rgba(239, 68, 68, 0.12);
-            border-color: rgba(239, 68, 68, 0.28);
-        }
-
-        .metrics {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .metric {
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .metric-label {
-            font-size: 12px;
-            color: var(--muted);
-            margin-bottom: 6px;
-        }
-        .metric-value {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .raw {
-            margin-top: 12px;
-        }
-        .raw pre {
-            margin: 10px 0 0;
-            padding: 12px;
-            border-radius: 14px;
-            border: 1px solid var(--line);
-            background: rgba(9, 14, 25, 0.7);
-            overflow: auto;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .table-wrap {
-            overflow: auto;
-            border-radius: 14px;
-            border: 1px solid var(--line);
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 780px;
-            background: rgba(9, 14, 25, 0.35);
-        }
-
-        .table th,
-        .table td {
-            padding: 10px 10px;
-            border-bottom: 1px solid var(--line);
-            font-size: 13px;
-        }
-        .table th {
-            text-align: left;
-            color: var(--muted);
-            font-weight: 700;
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .table tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .pill {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 999px;
-            border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .pill-good {
-            border-color: rgba(34, 197, 94, 0.35);
-            background: rgba(34, 197, 94, 0.12);
-        }
-        .pill-bad {
-            border-color: rgba(239, 68, 68, 0.35);
-            background: rgba(239, 68, 68, 0.12);
-        }
-
-        .footer {
-            margin-top: 12px;
-            color: var(--muted);
-            font-size: 12px;
-            text-align: center;
-        }
-    </style>
     <body>
         <div class="container">
             <header class="header">
                 <div>
-                    <h1>Anti‑Fraud Demo</h1>
+                    <h1>Anti‑Fraud</h1>
                     <p class="sub">
-                        Форма отправляет транзакцию в API и получает
-                        fraud‑score.
+                        Форма отправляет транзакцию в API и получает fraud‑score
                     </p>
                 </div>
                 <span class="badge">MSc / ML</span>
@@ -380,8 +86,10 @@
                 <section class="card">
                     <h2>Результат</h2>
 
-                    <div id="status" class="status status-idle">
-                        Ожидаю запрос…
+                    <div id="status" class="status">
+                        <div class="status-inner">
+                            Ожидаю ввод данных и отправку запроса
+                        </div>
                     </div>
 
                     <div class="metrics">
@@ -395,10 +103,35 @@
                         </div>
                     </div>
 
-                    <details class="raw">
-                        <summary>Raw JSON</summary>
-                        <pre id="rawJson">{}</pre>
-                    </details>
+                    <div style="margin-top: 12px">
+                        <div class="score-wrap">
+                            <div
+                                style="
+                                    flex: 0 0 140px;
+                                    font-size: 13px;
+                                    color: var(--muted);
+                                "
+                            >
+                                Score vs threshold
+                            </div>
+                            <div class="gauge" aria-hidden>
+                                <div id="gfill" class="gauge-fill"></div>
+                            </div>
+                            <div class="gauge-label" id="glabel">—</div>
+                        </div>
+                        <details class="raw">
+                            <summary
+                                style="
+                                    margin-top: 10px;
+                                    cursor: pointer;
+                                    color: var(--muted);
+                                "
+                            >
+                                Raw JSON
+                            </summary>
+                            <pre id="rawJson">{}</pre>
+                        </details>
+                    </div>
                 </section>
             </div>
 
@@ -433,9 +166,7 @@
                 </div>
             </section>
 
-            <footer class="footer">
-                <span>Demo UI • HTML/CSS • интеграция через fetch()</span>
-            </footer>
+            <footer class="footer"></footer>
         </div>
 
         <script>
@@ -549,21 +280,35 @@
                     isFraudEl.textContent = String(data.is_fraud ?? "—");
                     rawEl.textContent = JSON.stringify(data, null, 2);
 
+                    // Update gauge: percent relative to threshold
+                    const threshold = data?.components?.threshold ?? 60;
+                    const pct = Math.min(
+                        100,
+                        Math.round(((data.fraud_score ?? 0) / threshold) * 100),
+                    );
+                    const gfill = document.getElementById("gfill");
+                    const glabel = document.getElementById("glabel");
+                    gfill.style.width = pct + "%";
+                    glabel.textContent = pct + "%";
+
                     if (data.is_fraud === true) {
                         setStatus(
                             "status-bad",
                             "⚠️ Подозрительная операция (FRAUD)",
                         );
+                        gfill.style.filter = "hue-rotate(340deg)";
                     } else if (data.is_fraud === false) {
                         setStatus(
                             "status-good",
                             "✅ Операция выглядит нормально",
                         );
+                        gfill.style.filter = "hue-rotate(110deg)";
                     } else {
                         setStatus(
-                            "status-idle",
+                            "status",
                             "Получен ответ (без флага is_fraud)",
                         );
+                        gfill.style.filter = "none";
                     }
 
                     addRow(payload, data);

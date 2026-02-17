@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+    ServerName website-about.test
+    DocumentRoot "C:/Users/jesin/website-about/public"
+
+    <Directory "C:/Users/jesin/website-about/public">
+        Require all granted
+        AllowOverride All
+        Options Indexes FollowSymLinks
+    </Directory>
+
+    ErrorLog "logs/website-about-error.log"
+    CustomLog "logs/website-about-access.log" common
+</VirtualHost>
